@@ -1,0 +1,13 @@
+Joshua Stenis
+
+Build Instructions:
+ - open repository as pwd in terminal
+ - IF a project0 binary file already exists, type into the terminal `make clean`
+ - Type into the terminal `make`, `make all`, or `make project0`.
+ - To run the project0 program, type into the terminal `./project0`.
+
+Bugs/Fixes:
+ - There is currently no working code
+
+Documentation Utilized:
+ - n/a
