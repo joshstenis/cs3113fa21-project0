@@ -11,12 +11,17 @@ struct codepoint {
 };
 typedef struct codepoint codepoint;
 
+
+codepoint buftostruct(char *buf, int bufsize);
+
+
 int main(int argc, char **argv) {
 	
 	int filein, fileout, flagsout;
 	mode_t perms;
 	ssize_t numRead;
-	char buf[MAX_BUF];
+	char buf[MAX_BUF+1];
+	codepoint *counts;
 
 	flagsout = O_CREAT | O_WRONLY | O_TRUNC;
 	perms = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH;	// rw-rw-rw-
@@ -25,15 +30,13 @@ int main(int argc, char **argv) {
 	if (filein == -1) { printf("Error opening input file.\n"); }		// open() error check
 
 
-	while ((numRead = read(filein, buf, MAX_BUF)) > 0) {			// Count characters in filein
-		// Count characters
-		// IDEA: Store to array of structs containing character and its count?	
-		printf("Buffer: %s\n", buf);
-	}
+	while ((numRead = read(filein, buf, MAX_BUF)) > 0) {}			// read input file into buffer
+	if(numRead == -1) { printf("Error reading input file.\n");  }
 	
-	if(numRead == -1) { printf("Error reading input file.\n"); }		// read() error check
 	if(close(filein) == -1) { printf("Error closing input file.\n"); }	// close() error check
-
+	buf[MAX_BUF] = "\0";
+	
+	inputchars = buftostruct(buf, sizeof(buf));				// Store characters contained in buffer to an array of codepoint structs
 
 
 	// ---- QSORT ----
@@ -41,4 +44,27 @@ int main(int argc, char **argv) {
 
 
 	return 0;
+}
+
+/**
+ * Returns a pointer to a series of codepoint objects given a string buf and its size.
+ **/
+codepoint buftostruct(char *buf, int bufsize) {
+	codepoint *counts;
+	
+	for (int i=0; i < bufsize; i++) {
+		int found = 0;
+		
+		for (int j=0; j < (sizeof(counts)/sizeof(codepoint)); j++) {
+			if (buf[i] == counts[j].c) {
+				counts[j].count++;
+				found = 1;
+				break;
+			}
+		}
+		if (found == 0) {
+			counts[sizeof(counts)/sizeof(codepoint)].c = buf[i];
+			counts[sizeof(counts)/sizeof(codepoint)].count++;
+		}
+	} return counts;
 }
