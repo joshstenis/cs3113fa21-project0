@@ -7,7 +7,7 @@ Build Instructions:
  - To run the project0 program, type into the terminal `./project0`.
 
 Bugs/Fixes:
- - There is currently no working code
+ - Code does not count characters in input file
 
 Documentation Utilized:
- - n/a
+ - https://man7.org/linux/man-pages/man2/open.2.html
