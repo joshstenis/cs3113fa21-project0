@@ -12,7 +12,7 @@ int main(int argc, char **argv) {
 	ssize_t numRead;
 	char buf[MAX_BUF];
 
-	filein = open(argv[1], O_RDONLY);
+	filein = open(argv[1], O_RDONLY, perms);
 	if (filein == -1) { printf("Error opening input file.\n"); }		// open() error check
 
 	flagsout = O_CREAT | O_WRONLY | O_TRUNC;
