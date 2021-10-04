@@ -21,8 +21,7 @@ int main(int argc, char **argv) {
 	if (filein == -1) { printf("Error opening output file.\n"); }		// open() error check
 
 	while ((numRead = read(filein, buf, MAX_BUF)) > 0) {			// Count characters in filein
-
-		printf("Buffer: %s\n", buf);
+		if(write(fileout, buf, numRead) != numRead) { printf("Error writing to output file.\n"); }		
 	}
 	
 	if(numRead == -1) { printf("Error reading input file.\n"); }		// read() error check
