@@ -1,6 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+/*
+ *
+ *	DEPRECATED
+ *
+ *
+ *
+ *
+ */
+
+
+
+
+
 char *shrinkstr(char *arr, int size);
 
 int main(int argc, char **argv) {
