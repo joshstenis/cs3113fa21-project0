@@ -1,4 +1,4 @@
-all: project0 t_shrink
+all: project0
 
 project0: 
 	gcc project0.c -o project0
