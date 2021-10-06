@@ -12,8 +12,6 @@ typedef struct codepoint codepoint;
 
 codepoint *buftostruct(char *buf, int bufsize);
 
-char *shrinkstring(char *arr, int size);
-
 
 int main(int argc, char **argv) {
 	
@@ -37,10 +35,8 @@ int main(int argc, char **argv) {
 	buf[MAX_BUF] = "\0";
 
 	
-	char *newbuf = shrinkstring(buf, MAX_BUF+1);
 
-	printf("Old Size: %d\nNew Size: %d\n", sizeof(buf), sizeof(newbuf));
-
+	
 
 	//inputchars = buftostruct(buf, sizeof(buf));				// Store characters contained in buffer to an array of codepoint structs
 
@@ -51,19 +47,6 @@ int main(int argc, char **argv) {
 
 
 	return 0;
-}
-
-char *shrinkstring(char *arr, int size) {
-	int count = 0;
-	
-	for (int i=0; i < size; i++) {
-		if (arr[i] == NULL) { break; }
-		else { count++; }
-	} char ret[count];
-
-	for (int i=0; i < count; i++) {
-		ret[i] = arr[i];
-	} return ret;
 }
 
 
