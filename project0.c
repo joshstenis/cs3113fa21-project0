@@ -1,18 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
-//#include <sys/stat.h>
 
 #define MAX_BUF 1024
 
 struct codepoint {
-	int count;
-	char c;
+	int count, c;
 };
 typedef struct codepoint codepoint;
 
 
-codepoint buftostruct(char *buf, int bufsize);
+codepoint *buftostruct(char *buf, int bufsize);
 
 
 int main(int argc, char **argv) {
@@ -21,7 +19,7 @@ int main(int argc, char **argv) {
 	mode_t perms;
 	ssize_t numRead;
 	char buf[MAX_BUF+1];
-	codepoint *counts;
+	codepoint inputchars[];
 
 	flagsout = O_CREAT | O_WRONLY | O_TRUNC;
 	perms = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH;	// rw-rw-rw-
@@ -35,8 +33,9 @@ int main(int argc, char **argv) {
 	
 	if(close(filein) == -1) { printf("Error closing input file.\n"); }	// close() error check
 	buf[MAX_BUF] = "\0";
-	
+
 	inputchars = buftostruct(buf, sizeof(buf));				// Store characters contained in buffer to an array of codepoint structs
+
 
 
 	// ---- QSORT ----
@@ -46,16 +45,20 @@ int main(int argc, char **argv) {
 	return 0;
 }
 
+
 /**
  * Returns a pointer to a series of codepoint objects given a string buf and its size.
  **/
-codepoint buftostruct(char *buf, int bufsize) {
-	codepoint *counts;
+codepoint buftostruct[](char *buf, int bufsize) {
+	codepoint counts[bufsize];
 	
 	for (int i=0; i < bufsize; i++) {
 		int found = 0;
+		printf("i = %d\n", i);
 		
 		for (int j=0; j < (sizeof(counts)/sizeof(codepoint)); j++) {
+			printf("j = %d", j);
+			
 			if (buf[i] == counts[j].c) {
 				counts[j].count++;
 				found = 1;
