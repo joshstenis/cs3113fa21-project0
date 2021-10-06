@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
 	mode_t perms;
 	ssize_t numRead;
 	char buf[MAX_BUF+1];
-	codepoint inputchars[];
+	codepoint *inputchars;
 
 	flagsout = O_CREAT | O_WRONLY | O_TRUNC;
 	perms = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH;	// rw-rw-rw-
@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
 /**
  * Returns a pointer to a series of codepoint objects given a string buf and its size.
  **/
-codepoint buftostruct[](char *buf, int bufsize) {
+codepoint *buftostruct(char *buf, int bufsize) {
 	codepoint counts[bufsize];
 	
 	for (int i=0; i < bufsize; i++) {
