@@ -5,12 +5,12 @@ char *shrinkstr(char *arr, int size);
 
 int main(int argc, char **argv) {
 
-	char str[24] = "abc";
+	char str[24] = "abcdefghijklmnop";
 	char *newstr;
 
 	newstr = shrinkstr(str, 24);
 
-	printf("Old size: %d\nNew size: %d\n", sizeof(str), sizeof(newstr));
+	printf("Old: %s, %d\nNew: %s, %d\n", str, sizeof(str), newstr, sizeof(newstr));
 	
 	return 0;
 }
