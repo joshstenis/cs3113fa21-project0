@@ -22,8 +22,8 @@ int main(int argc, char **argv) {
 
 	printf("Buffer string length: %d\n", strlen(buf));
 
+	int idx = 0;
 	for (int i=0; i < strlen(buf); i++) {					// parse input string
-		int idx = 0;
 		int found = 0;
 		char tmp = buf[i];
 		
