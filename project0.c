@@ -44,8 +44,9 @@ int main(int argc, char **argv) {
 		}
 	}
 
-	printf("\nFirst char: %c\nCount: %d\n", ch[0].c, ch[0].count);
-
+	for (int i=0; i < idx; i++) {
+		printf("%c->%d\n", ch[i].c, ch[i].count);
+	}
 
 
 	// ---- QSORT ----
