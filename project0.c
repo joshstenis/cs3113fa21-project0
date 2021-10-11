@@ -14,27 +14,9 @@ typedef struct Char Char;
 
 int main(int argc, char **argv) {
 	
-	int filein, fileout, flagsout;
-	mode_t perms;
-	ssize_t numRead;
-	char buf[MAX_BUF+1];
-	buf[MAX_BUF] = "\0";
-	
-	flagsout = O_CREAT | O_WRONLY | O_TRUNC;
-	perms = S_IRUSR | S_IRGRP | S_IROTH;	// r--r--r--  , writing to input file is not necessary
-	
-	filein = open(argv[1], O_RDONLY, perms);
-	if (filein == -1) { printf("Error opening input file.\n"); }		// open() error check
+	char buf[MAX_BUF];
 
-
-	while ((numRead = read(filein, buf, MAX_BUF)) > 0) {
-		printf("Buffer: %s\n", buf);
-	}			// read input file into buffer
-	if(numRead == -1) { printf("Error reading input file.\n");  }
-	
-	if(close(filein) == -1) { printf("Error closing input file.\n"); }	// close() error check
-
-
+	scanf("%s", buf);
 
 	Char ch[strlen(buf)];
 
@@ -62,7 +44,7 @@ int main(int argc, char **argv) {
 		}
 	}
 
-	printf("First char: %c\nCount: %d\n", ch[1].c, ch[1].count);
+	printf("\nFirst char: %c\nCount: %d\n", ch[0].c, ch[0].count);
 
 
 
