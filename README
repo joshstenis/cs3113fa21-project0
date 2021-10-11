@@ -7,12 +7,13 @@ Build Instructions:
  - To run the project0 program, type into the terminal `./project0`.
 
 Bugs/Fixes:
- - Code does not count characters in input file
+ - Code does not properly process non-ASCII characters.
+    | IDEA FOR FIX: take in string input -> convert to separate int[] -> compare input using int[] ,...
+    | ------------- This ensures no bytes are cut off or separated.
 
-Documentation Utilized:
+Documentation Referenced:
  - https://man7.org/linux/man-pages/man2/open.2.html
  - https://stackoverflow.com/questions/20449546/c-get-unicode-code-point-for-character/20449871#20449871
  - https://www.tutorialspoint.com/cprogramming/c_return_arrays_from_function.htm
  - https://www.educative.io/edpresso/how-to-use-the-strlen-function-in-c
  - https://stackoverflow.com/questions/15108932/c-the-x-format-specifier
- - https://stackoverflow.com/questions/13293226/initializing-array-element-to-null
