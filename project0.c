@@ -6,7 +6,8 @@
 #define MAX_BUF 1024
 
 struct Char {
-	int count, c;
+	int count;
+	char c;
 };
 typedef struct Char Char;
 
@@ -34,25 +35,34 @@ int main(int argc, char **argv) {
 	if(close(filein) == -1) { printf("Error closing input file.\n"); }	// close() error check
 
 
-	for (int i=0; i < strlen(buf); i++) {
-		if (buf[i] == NULL) { break; }
+
+	Char ch[strlen(buf)];
+
+	printf("Buffer string length: %d\n", strlen(buf));
+
+	for (int i=0; i < strlen(buf); i++) {					// parse input string
+		int idx = 0;
+		int found = 0;
+		char tmp = buf[i];
 		
-		Char tmp;
-		tmp.c = buf[i];
-		
-		if () {
-			for (int j=i; i < strlen(buf); j++) {
-				if (tmp.c == buf[j]) { tmp.count++; }
+		for (int j=0; j < idx+1; j++) {				// look for existing Char obj in ch[]
+			if (ch[j].c == tmp) {
+				ch[j].count++;
+				printf("ch[j].c: %c, new count: %d\n", ch[j].c, ch[j].count);
+				found = 1;
+				break;
 			}
-			
-			if () {
-				printf("Error adding to String struct.");
-			}
-		} else {}
+		} if (found == 0) {							// if not found, append new Char obj to ch[]
+			printf("Added %c.\n", tmp);
+			ch[idx].c = tmp;
+			printf("ch[idx].c: %c\n", ch[idx].c);
+			ch[idx].count = 1;
+			printf("ch[idx].count: %d\n", ch[idx].count);
+			idx++;
+		}
 	}
 
-
-	// printf("First char utf-8: %x\n", buf[0]);
+	printf("First char: %c\nCount: %d\n", ch[1].c, ch[1].count);
 
 
 
