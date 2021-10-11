@@ -6,8 +6,7 @@
 #define MAX_BUF 1024
 
 struct Char {
-	int count;
-	char c;
+	int count, c;
 };
 typedef struct Char Char;
 
@@ -18,6 +17,8 @@ int main(int argc, char **argv) {
 
 	scanf("%s", buf);
 
+	printf("Buf: %s\n", buf);
+
 	Char ch[strlen(buf)];
 
 	printf("Buffer string length: %d\n", strlen(buf));
@@ -25,7 +26,7 @@ int main(int argc, char **argv) {
 	int idx = 0;
 	for (int i=0; i < strlen(buf); i++) {					// parse input string
 		int found = 0;
-		char tmp = buf[i];
+		int tmp = buf[i];
 		
 		for (int j=0; j < idx+1; j++) {				// look for existing Char obj in ch[]
 			if (ch[j].c == tmp) {
@@ -45,7 +46,7 @@ int main(int argc, char **argv) {
 	}
 
 	for (int i=0; i < idx; i++) {
-		printf("%c->%d\n", ch[i].c, ch[i].count);
+		printf("%c->%d\n", (char)ch[i].c, ch[i].count);
 	}
 
 
