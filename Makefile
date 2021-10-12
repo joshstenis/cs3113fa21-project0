@@ -3,9 +3,8 @@ all: project0
 project0: 
 	gcc project0.c -o project0
 
-t_shrink:
-	gcc t_shrink.c -o t_shrink
-
+t_binary:
+	gcc t_binar.c -o t_binary
 clean:
 	rm project0
-	rm t_shrink
+	rm t_binary
