@@ -3,7 +3,7 @@
 #include <fcntl.h>
 #include <string.h>
 
-#define MAX_BUF 1024
+#define MAX_BUF 1025
 
 struct Char {
 	int count;
@@ -15,6 +15,7 @@ typedef struct Char Char;
 int main(int argc, char **argv) {
 	
 	char buf[MAX_BUF];
+	buf[MAX_BUF] = '\0';
 
 	scanf("%s", buf);
 
@@ -27,9 +28,10 @@ int main(int argc, char **argv) {
 	int idx = 0;
 	int nbytes;
 	for (int i=0; i < strlen(buf); i+=nbytes) {					// parse input string
-	
+
+		printf("i: %d\n", i);
+
 		int found = 0;
-		nbytes = 1;
 		char hex[8];
 		sprintf(hex, "%x", buf[i]);
 
@@ -50,7 +52,7 @@ int main(int argc, char **argv) {
 			tmp[2] = buf[i+2];
 			tmp[3] = '\0';
 			nbytes = 3;
-		} else if (hex[6] == '8') {
+		} else if (hex[6] == 'c' || hex[6] == 'd') {
 			tmp = malloc(3);
 			tmp[0] = buf[i];
 			tmp[1] = buf[i+1];
@@ -60,7 +62,10 @@ int main(int argc, char **argv) {
 			tmp = malloc(2);
 			tmp[0] = buf[i];
 			tmp[1] = '\0';
+			nbytes = 1;
 		}
+
+		printf("Current character: %s\n", tmp);
 
 
 		for (int j=0; j < idx; j++) {				// look for existing Char obj in ch[]
@@ -80,6 +85,7 @@ int main(int argc, char **argv) {
 			ch[idx].count = 1;
 			printf("ch[%d].count: %d\n", idx, ch[idx].count);
 			idx++;
+			printf("nbytes: %d\n", nbytes);
 		} free(tmp);
 	}
 
@@ -89,11 +95,11 @@ int main(int argc, char **argv) {
 	
 	
 	
-	for (int i=0; i < idx; i++) {
-		printf("%s->%d\n", ch[i].c, ch[i].count);
+	for (int i=0; i < idx; i++) {				// prints output
+		printf("%s -> %d\n", ch[i].c, ch[i].count);
 	} 
 	
-	for (int i=0; i < idx; i++) {
+	for (int i=0; i < idx; i++) {				// frees allocated memory from all the Char.c member vars
 		free(ch[i].c);
-	}return 0;
+	} return 0;
 }
