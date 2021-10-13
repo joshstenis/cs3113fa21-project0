@@ -33,27 +33,34 @@ int main(int argc, char **argv) {
 		char hex[8];
 		sprintf(hex, "%x", buf[i]);
 
-		char tmp[5];
-		tmp[4] = '\0';
+		char *tmp;
 		if (hex[6] == 'f') { 
+			tmp = malloc(5);
 			tmp[0] = buf[i];
 			tmp[1] = buf[i+1];
 			tmp[2] = buf[i+2];
 			tmp[3] = buf[i+3];
+			tmp[4] = '\0';
 			nbytes = 4;
-		}
-		else if (hex[6] == 'e') {
+		} else if (hex[6] == 'e') {
+			printf("3 byte char.\n");
+			tmp = malloc(4);
 			tmp[0] = buf[i];
 			tmp[1] = buf[i+1];
 			tmp[2] = buf[i+2];
+			tmp[3] = '\0';
 			nbytes = 3;
-		}
-		else if (hex[6] == '8') {
+		} else if (hex[6] == '8') {
+			tmp = malloc(3);
 			tmp[0] = buf[i];
 			tmp[1] = buf[i+1];
+			tmp[2] = '\0';
 			nbytes = 2;
+		} else {
+			tmp = malloc(2);
+			tmp[0] = buf[i];
+			tmp[1] = '\0';
 		}
-		else { tmp[0] = buf[i]; }
 
 
 		for (int j=0; j < idx; j++) {				// look for existing Char obj in ch[]
@@ -66,12 +73,14 @@ int main(int argc, char **argv) {
 			}
 		} if (found == 0) {							// if not found, append new Char obj to ch[]
 			printf("Added %s.\n", tmp);
+			ch[idx].c = malloc(nbytes+1);
 			strcpy(ch[idx].c, tmp);
+			ch[idx].c += '\0';
 			printf("ch[%d].c: %s\n", idx, ch[idx].c);
 			ch[idx].count = 1;
 			printf("ch[%d].count: %d\n", idx, ch[idx].count);
 			idx++;
-		}
+		} free(tmp);
 	}
 
 	
@@ -82,5 +91,9 @@ int main(int argc, char **argv) {
 	
 	for (int i=0; i < idx; i++) {
 		printf("%s->%d\n", ch[i].c, ch[i].count);
-	} return 0;
+	} 
+	
+	/*for (int i=0; i < idx; i++) {
+		free(ch[idx].c);
+	} */return 0;
 }
