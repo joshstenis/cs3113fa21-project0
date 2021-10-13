@@ -1,8 +1,10 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 char *strtobin(char *str);
 
-char *prepend(char *s, char c);
+char *prepend(char *s, char *c);
 
 char *dtob(int n);
 
@@ -12,9 +14,9 @@ int main(int argc, char **argv) {
 	char *str;
 	scanf("%s", str);
 
-	str = prepend(str, "A");
+	char *nstr = prepend(str, "A");
 
-	printf("New string: %s\n", str);
+	printf("New string: %s\n", nstr);
 	return 0;
 }
 
@@ -27,10 +29,7 @@ char *strtobin(char *str) {
 
 	char *binary;
 
-	while () {
-
-
-	}
+	// Convert char by char in loop
 
 	return binary;
 }
@@ -41,18 +40,23 @@ char *dtob(int n) {
 
 	while (n > 1) {
 		int r = n % 2;
-		bin = prepend(bin, (char)r);
+		// bin = prepend(bin, (char)r);
 		n = n / 2;
 	}
 
 	return bin;
 }
 
-char *prepend(char *s, char c) {
+char *prepend(char *s, char *c) {
 	char *str;
-	for (int i=0; i <= strlen(s); i++) {
-		
-		*(str+i+1) = *(s+i);
+	strcat(str, c);
 
-	} return (*str = c);
+	for (int i=0; i < strlen(s); i++) {
+		
+		str[i+strlen(c)] = s[i];
+		printf("str[%d]: %c\n", i+strlen(c), str[i+strlen(c)]);
+	
+	} printf("str: %s\n", str);
+	
+	return str;
 }

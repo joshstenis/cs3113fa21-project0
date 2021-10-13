@@ -23,6 +23,13 @@ int main(int argc, char **argv) {
 
 	printf("Buffer string length: %d\n", strlen(buf));
 
+	char hex[8];
+	sprintf(hex, "%x", buf[1]);
+
+	printf("First char leading MSB place: %c\n", hex[6]);
+	printf("First char in hex: %x\n", buf[1]);
+	printf("Buf part 2: %s\n", 0x231b);
+
 	int idx = 0;
 	for (int i=0; i < strlen(buf); i++) {					// parse input string
 		int found = 0;
@@ -45,14 +52,13 @@ int main(int argc, char **argv) {
 		}
 	}
 
+	
+	
+	// ---- QSORT ----
+	
+	
+	
 	for (int i=0; i < idx; i++) {
 		printf("%c->%d\n", (char)ch[i].c, ch[i].count);
-	}
-
-
-	// ---- QSORT ----
-
-
-
-	return 0;
+	} return 0;
 }
