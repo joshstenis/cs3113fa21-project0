@@ -23,32 +23,39 @@ int main(int argc, char **argv) {
 
 	printf("Buffer string length: %d\n", strlen(buf));
 
-	char hex[8];
-	sprintf(hex, "%x", buf[1]);
-
-	printf("First char leading MSB place: %c\n", hex[6]);
-	printf("First char in hex: %x\n", buf[1]);
-	printf("Buf part 2: %s\n", 0x231b);
-
 	int idx = 0;
 	for (int i=0; i < strlen(buf); i++) {					// parse input string
-		int found = 0;
-		int tmp = buf[i];
 		
-		for (int j=0; j < idx+1; j++) {				// look for existing Char obj in ch[]
-			if (ch[j].c == tmp) {
-				ch[j].count++;
-				printf("ch[j].c: %c, new count: %d\n", ch[j].c, ch[j].count);
-				found = 1;
-				break;
+		char hex[8];
+		sprintf(hex, "%x", buf[i]);
+		char msb[2] = { hex[6], hex[7] };
+
+		if (msb[0] == 'f' || msb[0] == 'e' || msb[0] == '8') {
+		
+			// Multi-byte characters
+			printf("First char leading MSB place: %c\n", msb[0]);
+			printf("First char in hex: %x\n", buf[i]);
+			break;
+
+		} else {
+			int found = 0;
+			int tmp = buf[i];
+			
+			for (int j=0; j < idx+1; j++) {				// look for existing Char obj in ch[]
+				if (ch[j].c == tmp) {
+					ch[j].count++;
+					printf("ch[j].c: %c, new count: %d\n", ch[j].c, ch[j].count);
+					found = 1;
+					break;
+				}
+			} if (found == 0) {							// if not found, append new Char obj to ch[]
+				printf("Added %c.\n", tmp);
+				ch[idx].c = tmp;
+				printf("ch[idx].c: %c\n", ch[idx].c);
+				ch[idx].count = 1;
+				printf("ch[idx].count: %d\n", ch[idx].count);
+				idx++;
 			}
-		} if (found == 0) {							// if not found, append new Char obj to ch[]
-			printf("Added %c.\n", tmp);
-			ch[idx].c = tmp;
-			printf("ch[idx].c: %c\n", ch[idx].c);
-			ch[idx].count = 1;
-			printf("ch[idx].count: %d\n", ch[idx].count);
-			idx++;
 		}
 	}
 
