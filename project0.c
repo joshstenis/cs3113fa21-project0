@@ -6,7 +6,8 @@
 #define MAX_BUF 1024
 
 struct Char {
-	int count, c;
+	int count;
+	char *c;
 };
 typedef struct Char Char;
 
@@ -24,38 +25,52 @@ int main(int argc, char **argv) {
 	printf("Buffer string length: %d\n", strlen(buf));
 
 	int idx = 0;
-	for (int i=0; i < strlen(buf); i++) {					// parse input string
-		
+	int nbytes;
+	for (int i=0; i < strlen(buf); i+=nbytes) {					// parse input string
+	
+		int found = 0;
+		nbytes = 1;
 		char hex[8];
 		sprintf(hex, "%x", buf[i]);
-		char msb[2] = { hex[6], hex[7] };
 
-		if (msb[0] == 'f' || msb[0] == 'e' || msb[0] == '8') {
-		
-			// Multi-byte characters
-			printf("First char leading MSB place: %c\n", msb[0]);
-			printf("First char in hex: %x\n", buf[i]);
-			break;
+		char tmp[5];
+		tmp[4] = '\0';
+		if (hex[6] == 'f') { 
+			tmp[0] = buf[i];
+			tmp[1] = buf[i+1];
+			tmp[2] = buf[i+2];
+			tmp[3] = buf[i+3];
+			nbytes = 4;
+		}
+		else if (hex[6] == 'e') {
+			tmp[0] = buf[i];
+			tmp[1] = buf[i+1];
+			tmp[2] = buf[i+2];
+			nbytes = 3;
+		}
+		else if (hex[6] == '8') {
+			tmp[0] = buf[i];
+			tmp[1] = buf[i+1];
+			nbytes = 2;
+		}
+		else { tmp[0] = buf[i]; }
 
-		} else {
-			int found = 0;
-			int tmp = buf[i];
-			
-			for (int j=0; j < idx+1; j++) {				// look for existing Char obj in ch[]
-				if (ch[j].c == tmp) {
-					ch[j].count++;
-					printf("ch[j].c: %c, new count: %d\n", ch[j].c, ch[j].count);
-					found = 1;
-					break;
-				}
-			} if (found == 0) {							// if not found, append new Char obj to ch[]
-				printf("Added %c.\n", tmp);
-				ch[idx].c = tmp;
-				printf("ch[idx].c: %c\n", ch[idx].c);
-				ch[idx].count = 1;
-				printf("ch[idx].count: %d\n", ch[idx].count);
-				idx++;
+
+		for (int j=0; j < idx; j++) {				// look for existing Char obj in ch[]
+			if (strncmp(ch[j].c, tmp, nbytes) == 0) {
+				ch[j].count++;
+				printf("Tmp: %s, Idx: %d	", tmp, idx);
+				printf("ch[%d].c: %s, new count: %d\n", j, ch[j].c, ch[j].count);
+				found = 1;
+				break;
 			}
+		} if (found == 0) {							// if not found, append new Char obj to ch[]
+			printf("Added %s.\n", tmp);
+			strcpy(ch[idx].c, tmp);
+			printf("ch[%d].c: %s\n", idx, ch[idx].c);
+			ch[idx].count = 1;
+			printf("ch[%d].count: %d\n", idx, ch[idx].count);
+			idx++;
 		}
 	}
 
@@ -66,6 +81,6 @@ int main(int argc, char **argv) {
 	
 	
 	for (int i=0; i < idx; i++) {
-		printf("%c->%d\n", (char)ch[i].c, ch[i].count);
+		printf("%s->%d\n", ch[i].c, ch[i].count);
 	} return 0;
 }
