@@ -93,7 +93,7 @@ int main(int argc, char **argv) {
 		printf("%s->%d\n", ch[i].c, ch[i].count);
 	} 
 	
-	/*for (int i=0; i < idx; i++) {
-		free(ch[idx].c);
-	} */return 0;
+	for (int i=0; i < idx; i++) {
+		free(ch[i].c);
+	}return 0;
 }
