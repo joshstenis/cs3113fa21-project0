@@ -11,6 +11,8 @@ struct Char {
 };
 typedef struct Char Char;
 
+int cmpcount(const void *a, const void *b);
+
 
 int main(int argc, char **argv) {
 
@@ -74,10 +76,18 @@ int main(int argc, char **argv) {
 
 	if (numRead < 0) { printf("Read error.\n"); }
 
-
+	qsort(&ch[0], sizeof(ch)/sizeof(Char), sizeof(Char), cmpcount);
 
 	for (int i=0; i < idx; i++) {
 		printf("%s -> %d\n", ch[i].c, ch[i].count);
 	} return 0;
+}
+
+int cmpcount(const void *a, const void *b) {
+
+	a = (const Char *)a;
+	b = (const Char *)b;
+
+	return (*a).count - (*b).count;
 }
 
