@@ -85,6 +85,6 @@ int main(int argc, char **argv) {
 	qsort(ch, idx, sizeof(Char), cmpcount);		// sorts array from highest -> lowest character count
 	
 	for (int i=0; i < idx; i++) {					// prints characters and their count
-		printf("%s -> %d\n", ch[i].c, ch[i].count);
+		printf("%s->%d\n", ch[i].c, ch[i].count);
 	} return 0;
 }
