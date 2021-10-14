@@ -3,11 +3,11 @@ Joshua Stenis
 Build Instructions:
  - open repository as pwd in terminal
  - IF a project0 binary file already exists, type into the terminal `make clean`
- - Type into the terminal `make project0`. If you wish to build the testcases aswell, then type `make`, `make all`, or `make <testcase-name>`.
- - To run the project0 program, type into the terminal `./project0`.
+ - Type into the terminal `make`, `make all`, or `make project0`.
+ - To run the project0 program, type into the terminal `cat <filename> | ./project0`. The piping of <filename> is to populate stdin. If there is another way you
+ wish to populate stdin go ahead and use that method.
 
 Bugs/Fixes:
- - Code exits parsing process early after processing a multibyte character.
 
 Documentation Referenced:
  - https://man7.org/linux/man-pages/man2/open.2.html
