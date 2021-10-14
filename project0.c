@@ -3,7 +3,7 @@
 #include <fcntl.h>
 #include <string.h>
 
-#define MAX_BYTES 1024
+#define MAX_BYTES 1,112,064
 
 struct Char {		// Stores utf-8 character and its count
 	int count;
