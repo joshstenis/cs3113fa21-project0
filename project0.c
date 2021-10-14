@@ -3,103 +3,88 @@
 #include <fcntl.h>
 #include <string.h>
 
-#define MAX_BUF 1025
+#define MAX_BYTES 1024
 
-struct Char {
+struct Char {		// Stores utf-8 character and its count
 	int count;
 	char c[5];
 };
 typedef struct Char Char;
 
+int cmpcount(const void *l, const void *r) {		// Comparator for qsort() between Char objects
+
+	const Char *a = (const Char *)l;
+	const Char *b = (const Char *)r;
+
+	return b->count - a->count;
+}
+
 
 int main(int argc, char **argv) {
+
+	char buf[5];
+	ssize_t numRead;
+
+	Char ch[MAX_BYTES];
+
+	int idx, nbytes = 0;
+	while ((numRead = read(0, buf, 1)) > 0) {		// Parses stdin
 	
-	char buf[MAX_BUF];
-	buf[MAX_BUF] = '\0';
-
-	scanf("%s", buf);
-
-	printf("Buf: %s\n", buf);
-
-	Char ch[strlen(buf)];
-
-	printf("Buffer string length: %d\n", strlen(buf));
-
-	int idx = 0;
-	int nbytes;
-	for (int i=0; i < strlen(buf); i+=nbytes) {					// parse input string
-
-		printf("i: %d\n", i);
-
+		buf[1] = '\0';		// assumes 1 byte character (ASCII)
 		int found = 0;
-		char hex[8];
-		sprintf(hex, "%x", buf[i]);
+		nbytes = 1;
 
-		char tmp[5];
-		if (hex[6] == 'f') { 
-			// tmp = malloc(5);
-			tmp[0] = buf[i];
-			tmp[1] = buf[i+1];
-			tmp[2] = buf[i+2];
-			tmp[3] = buf[i+3];
-			tmp[4] = '\0';
+		char hex[8];		// raw hex value of buf[0]
+		char *cbuf;		// used for reading following bytes of a single character
+		sprintf(hex, "%08x", buf[0]);
+
+	
+		if (hex[6] == 'f') {				// 4 byte character
+			numRead = read(0, &cbuf, 1);
+			buf[1] = cbuf;
+			numRead = read(0, &cbuf, 1);
+			buf[2] = cbuf;
+			numRead = read(0, &cbuf, 1);
+			buf[3] = cbuf;
+			buf[4] = '\0';
 			nbytes = 4;
-		} else if (hex[6] == 'e') {
-			printf("3 byte char.\n");
-			// tmp = malloc(4);
-			tmp[0] = buf[i];
-			tmp[1] = buf[i+1];
-			tmp[2] = buf[i+2];
-			tmp[3] = '\0';
+		} else if (hex[6] == 'e') {			// 3 byte character
+			numRead = read(0, &cbuf, 1);
+			buf[1] = cbuf;
+			numRead = read(0, &cbuf, 1);
+			buf[2] = cbuf;
+			buf[3] = '\0';
 			nbytes = 3;
-		} else if (hex[6] == 'c' || hex[6] == 'd') {
-			// tmp = malloc(3);
-			tmp[0] = buf[i];
-			tmp[1] = buf[i+1];
-			tmp[2] = '\0';
+		} else if (hex[6] == 'd' || hex[6] == 'c') {	// 2 byte character
+			numRead = read(0, &cbuf, 1);
+			buf[1] = cbuf;
+			buf[2] = '\0';
 			nbytes = 2;
-		} else {
-			// tmp = malloc(2);
-			tmp[0] = buf[i];
-			tmp[1] = '\0';
-			nbytes = 1;
 		}
 
-		printf("Current character: %s\n", tmp);
 
-
-		for (int j=0; j < idx; j++) {				// look for existing Char obj in ch[]
-			if (strncmp(ch[j].c, tmp, nbytes) == 0) {
-				ch[j].count++;
-				printf("Tmp: %s, Idx: %d	", tmp, idx);
-				printf("ch[%d].c: %s, new count: %d\n", j, ch[j].c, ch[j].count);
+		for (int i=0; i < idx; i++) {					// checks if current character has been found previously
+			if (strncmp(ch[i].c, buf, nbytes) == 0) {
+				ch[i].count++;
 				found = 1;
 				break;
 			}
-		} if (found == 0) {							// if not found, append new Char obj to ch[]
-			printf("Added %s.\n", tmp);
-			// ch[idx].c = malloc(nbytes+1);
-			strcpy(ch[idx].c, tmp);
-			// ch[idx].c += '\0';
-			printf("ch[%d].c: %s\n", idx, ch[idx].c);
+
+		} if (found == 0) {						// appends buf to array of found characters
+			strncpy(ch[idx].c, buf, nbytes);
+			ch[idx].c[nbytes] = '\0';
 			ch[idx].count = 1;
-			printf("ch[%d].count: %d\n", idx, ch[idx].count);
 			idx++;
-			printf("nbytes: %d\n", nbytes);
-		} // free(tmp);
+		} strcpy(hex, "");	// empties hex
 	}
 
+
+	if (numRead < 0) { printf("Read error.\n"); }		// error check
+
 	
+	qsort(ch, idx, sizeof(Char), cmpcount);		// sorts array from highest -> lowest character count
 	
-	// ---- QSORT ----
-	
-	
-	
-	for (int i=0; i < idx; i++) {				// prints output
+	for (int i=0; i < idx; i++) {					// prints characters and their count
 		printf("%s -> %d\n", ch[i].c, ch[i].count);
-	} 
-	
-	/*for (int i=0; i < idx; i++) {				// frees allocated memory from all the Char.c member vars
-		free(ch[i].c);
-	} */ return 0;
+	} return 0;
 }
